@@ -1,4 +1,7 @@
-const API_URL = "http://127.0.0.1:8000";
+// Use relative URLs - will use current domain in production, localhost:8000 in dev
+const API_URL = window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1' 
+    ? "http://localhost:8000" 
+    : "";  // In production on Vercel, use current domain
 
 async function apiCall(endpoint, method = 'GET', data = null) {
     console.log(`Making API call to: ${endpoint}`);
