@@ -2,7 +2,7 @@
   "buildCommand": "pip install -r requirements.txt",
   "framework": "fastapi",
   "functions": {
-    "api/**/*.py": {
+    "api/index.py": {
       "memory": 1024,
       "maxDuration": 30
     }
