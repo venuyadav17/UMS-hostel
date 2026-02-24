@@ -103,10 +103,10 @@ if (registerForm) {
                 try {
                     const errorData = await response.json();
                     alert('Registration failed: ' + errorData.detail);
-                } catch {
-                    const errorText = await response.text();
-                    console.error('Raw error response:', errorText);
-                    alert('Registration failed: ' + response.status + ' ' + response.statusText);
+                } catch (jsonError) {
+                    // If response is not JSON, just show status code
+                    console.error('Backend error (non-JSON response):', response.status);
+                    alert('Registration failed: Server error ' + response.status);
                 }
             }
         } catch (error) {
