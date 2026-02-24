@@ -10,11 +10,25 @@ from fastapi import FastAPI
 from fastapi.staticfiles import StaticFiles
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import FileResponse
-from database import engine, Base
-from routers import users, hostels
 
-# Create all tables
-Base.metadata.create_all(bind=engine)
+# Initialize FastAPI app first
+app = FastAPI()
+
+# Try to import and initialize database
+try:
+    from database import engine, Base
+    from routers import users, hostels
+    
+    # Create all tables
+    Base.metadata.create_all(bind=engine)
+    
+    # Include routers
+    app.include_router(users.router)
+    app.include_router(hostels.router)
+except Exception as e:
+    print(f"Error initializing database or routers: {e}")
+    import traceback
+    traceback.print_exc()
 
 app = FastAPI()
 
