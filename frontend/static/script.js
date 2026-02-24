@@ -100,11 +100,18 @@ if (registerForm) {
                 alert('Registration successful! Please login.');
                 window.location.href = '/';
             } else {
-                const errorData = await response.json();
-                alert('Registration failed: ' + errorData.detail);
+                try {
+                    const errorData = await response.json();
+                    alert('Registration failed: ' + errorData.detail);
+                } catch {
+                    const errorText = await response.text();
+                    console.error('Raw error response:', errorText);
+                    alert('Registration failed: ' + response.status + ' ' + response.statusText);
+                }
             }
         } catch (error) {
             console.error('Registration error:', error);
+            alert('Registration error: ' + error.message);
         }
     });
 }
