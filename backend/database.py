@@ -29,3 +29,10 @@ try:
         print("Database connection successful!")
 except Exception as e:
     print(f"Database connection failed: {e}")
+# Create tables on first connection (will be called from api/index.py)
+def init_db():
+    try:
+        Base.metadata.create_all(bind=engine)
+        print("Database tables initialized")
+    except Exception as e:
+        print(f"Error creating tables: {e}")

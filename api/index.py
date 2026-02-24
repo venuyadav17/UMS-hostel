@@ -14,19 +14,23 @@ from fastapi.responses import FileResponse
 # Initialize FastAPI app first
 app = FastAPI()
 
-# Try to import and initialize database
+# Try to import routers and database
 try:
-    from database import engine, Base
+    from database import engine, Base, init_db
     from routers import users, hostels
-    
-    # Create all tables
-    Base.metadata.create_all(bind=engine)
     
     # Include routers
     app.include_router(users.router)
     app.include_router(hostels.router)
+    
+    # Initialize database tables (happens lazily)
+    try:
+        init_db()
+    except Exception as e:
+        print(f"Warning: Could not initialize database tables: {e}")
+    
 except Exception as e:
-    print(f"Error initializing database or routers: {e}")
+    print(f"Error initializing routers: {e}")
     import traceback
     traceback.print_exc()
 
