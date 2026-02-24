@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Student Dashboard - HostelHub</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="static/style.css">
+</head>
+
+<body>
+    <nav class="nav">
+        <h2><i class="fas fa-hotel"></i> HostelHub</h2>
+        <div style="display: flex; align-items: center; gap: 1rem;">
+            <span><i class="fas fa-user-graduate"></i> Student Portal</span>
+            <button onclick="logout()"><i class="fas fa-sign-out-alt"></i> Logout</button>
+        </div>
+    </nav>
+
+    <div class="dashboard-container">
+        <h2 style="margin-bottom: 2rem;"><i class="fas fa-search"></i> Find Your Perfect Room</h2>
+
+        <div class="filter-section glass">
+            <div class="form-group">
+                <label for="filterType"><i class="fas fa-snowflake"></i> Room Type</label>
+                <select id="filterType">
+                    <option value="all">All Types</option>
+                    <option value="ac">AC</option>
+                    <option value="non_ac">Non-AC</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label for="filterSeater"><i class="fas fa-users"></i> Seater Type</label>
+                <select id="filterSeater">
+                    <option value="all">All Capacities</option>
+                    <option value="3">3 Seater</option>
+                    <option value="4">4 Seater</option>
+                </select>
+            </div>
+            <button onclick="filterHostels()"><i class="fas fa-filter"></i> Apply Filters</button>
+        </div>
+
+        <!-- Booked Room Container (Initially Hidden) -->
+        <div id="myBookingContainer"
+            style="display: none; align-items: center; justify-content: center; flex-direction: column; text-align: center; padding: 3rem;">
+            <i class="fas fa-check-circle" style="font-size: 4rem; color: #10b981; margin-bottom: 1rem;"></i>
+            <h3>Your Booked Room</h3>
+            <p style="color: var(--text-muted); margin-bottom: 2rem;">You have successfully booked the following room.
+            </p>
+            <div id="myBookingDetails" style="text-align: left; width: 100%; max-width: 500px;">
+                <!-- Booking details injected here via JS -->
+            </div>
+        </div>
+
+        <div id="hostelsList">
+            <!-- Hostels will be loaded here dynamicall via script.js -->
+            <div style="text-align: center; color: var(--text-muted); padding: 3rem;">
+                <i class="fas fa-circle-notch fa-spin fa-3x"></i>
+                <p style="margin-top: 1rem;">Fetching available hostels...</p>
+            </div>
+        </div>
+    </div>
+
+    <div id="groupBookingModal" class="modal"
+        style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.5); align-items: center; justify-content: center; z-index: 1000;">
+        <div class="modal-content glass" style="padding: 2rem; max-width: 400px; width: 90%; text-align: center;">
+            <h3 style="margin-bottom: 1rem;"><i class="fas fa-users-cog"></i> Group Booking</h3>
+            <p style="color: var(--text-muted); margin-bottom: 1rem; font-size: 0.9rem;">Adding friends? Enter their
+                student IDs separated by commas (e.g., 2, 5, 8). Leave blank to book only for yourself.</p>
+            <input type="text" id="groupStudentIds" placeholder="1, 2, 3..."
+                style="width: 100%; padding: 0.8rem; margin-bottom: 1rem; border-radius: 8px; border: 1px solid rgba(255,255,255,0.2); background: rgba(0,0,0,0.2); color: white;">
+            <div style="display: flex; gap: 1rem; justify-content: center;">
+                <button id="cancelGroupBtn" style="background: rgba(255,255,255,0.1);">Cancel</button>
+                <button id="confirmGroupBtn">Confirm Booking</button>
+            </div>
+            <input type="hidden" id="pendingRoomId">
+        </div>
+    </div>
+
+    <script src="static/script.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', loadHostelsForStudent);
+    </script>
+</body>
+
+</html>
