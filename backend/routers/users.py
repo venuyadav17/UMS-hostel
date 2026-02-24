@@ -11,10 +11,19 @@ router = APIRouter(
 
 @router.post("/register", response_model=schemas.User)
 def create_user(user: schemas.UserCreate, db: Session = Depends(get_db)):
-    db_user = crud.get_user(db, username=user.username)
-    if db_user:
-        raise HTTPException(status_code=400, detail="Username already registered")
-    return crud.create_user(db=db, user=user)
+    try:
+        print(f"Registration attempt for username: {user.username}, email: {user.email}", flush=True)
+        db_user = crud.get_user(db, username=user.username)
+        if db_user:
+            raise HTTPException(status_code=400, detail="Username already registered")
+        created_user = crud.create_user(db=db, user=user)
+        print(f"User created successfully: {created_user.username}", flush=True)
+        return created_user
+    except HTTPException:
+        raise
+    except Exception as e:
+        print(f"Error during registration: {str(e)}", flush=True)
+        raise HTTPException(status_code=500, detail=f"Registration error: {str(e)}")
 
 @router.post("/token", response_model=schemas.Token)
 def login_for_access_token(form_data: OAuth2PasswordRequestForm = Depends(), db: Session = Depends(get_db)):
