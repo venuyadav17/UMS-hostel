@@ -1,3 +1,10 @@
+import sys
+import os
+from pathlib import Path
+
+# Add current directory to path for module resolution
+sys.path.insert(0, str(Path(__file__).parent))
+
 from fastapi import FastAPI
 from fastapi.staticfiles import StaticFiles
 from fastapi.middleware.cors import CORSMiddleware

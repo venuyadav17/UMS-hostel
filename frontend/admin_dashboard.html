@@ -85,6 +85,27 @@
                     <button type="submit">Add Rooms <i class="fas fa-plus"></i></button>
                 </form>
             </div>
+
+            <!-- Add Admin Form -->
+            <div class="glass" style="padding: 2.5rem;">
+                <h3><i class="fas fa-user-shield"></i> Add New Admin</h3>
+                <p style="color: var(--text-muted); margin-bottom: 1.5rem;">Register another admin user.</p>
+                <form id="addAdminForm">
+                    <div class="form-group">
+                        <label for="adminUsername">Username</label>
+                        <input type="text" id="adminUsername" placeholder="Admin username" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="adminEmail">Email</label>
+                        <input type="email" id="adminEmail" placeholder="admin@example.com" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="adminPassword">Password</label>
+                        <input type="password" id="adminPassword" placeholder="••••••••" required>
+                    </div>
+                    <button type="submit">Create Admin Account <i class="fas fa-user-plus"></i></button>
+                </form>
+            </div>
         </div>
     </div>
 

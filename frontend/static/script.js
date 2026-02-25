@@ -90,7 +90,7 @@ if (registerForm) {
         const username = document.getElementById('username').value;
         const password = document.getElementById('password').value;
         const email = document.getElementById('email').value;
-        const role = document.getElementById('role').value;
+        const role = "student";  // Only students can register
 
         const data = { username, password, email, role };
 
@@ -251,6 +251,41 @@ if (addRoomForm) {
 
         addRoomForm.reset();
         roomNumbersContainer.innerHTML = '';
+    });
+}
+
+// Admin: Add New Admin User
+const addAdminForm = document.getElementById('addAdminForm');
+if (addAdminForm) {
+    addAdminForm.addEventListener('submit', async (e) => {
+        e.preventDefault();
+        const username = document.getElementById('adminUsername').value;
+        const email = document.getElementById('adminEmail').value;
+        const password = document.getElementById('adminPassword').value;
+
+        try {
+            const response = await apiCall('/admin/create-admin', 'POST', {
+                username,
+                email,
+                password,
+                role: 'admin'
+            });
+
+            if (response.ok) {
+                alert(`Admin account created successfully!\nUsername: ${username}`);
+                addAdminForm.reset();
+            } else {
+                try {
+                    const errorData = await response.json();
+                    alert('Error: ' + errorData.detail);
+                } catch {
+                    alert('Error creating admin account');
+                }
+            }
+        } catch (error) {
+            console.error('Error creating admin:', error);
+            alert('Error: ' + error.message);
+        }
     });
 }
 

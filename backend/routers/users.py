@@ -52,3 +52,34 @@ def login_for_access_token(form_data: OAuth2PasswordRequestForm = Depends(), db:
 @router.get("/users/me", response_model=schemas.User)
 def read_users_me(current_user: models.User = Depends(auth.get_current_active_user)):
     return current_user
+@router.post("/admin/create-admin", response_model=schemas.User)
+def create_admin(
+    admin_data: schemas.UserCreate,
+    current_user: models.User = Depends(auth.get_current_active_user),
+    db: Session = Depends(get_db)
+):
+    """Create a new admin user. Only accessible to existing admins."""
+    
+    # Check if current user is admin
+    if current_user.role != "admin":
+        raise HTTPException(
+            status_code=status.HTTP_403_FORBIDDEN,
+            detail="Only admins can create new admin accounts"
+        )
+    
+    # Check if username already exists
+    db_user = crud.get_user(db, username=admin_data.username)
+    if db_user:
+        raise HTTPException(status_code=400, detail="Username already exists")
+    
+    # Force role to admin
+    admin_data.role = "admin"
+    
+    # Create the admin user
+    try:
+        new_admin = crud.create_user(db=db, user=admin_data)
+        print(f"New admin created: {new_admin.username} by {current_user.username}", flush=True)
+        return new_admin
+    except Exception as e:
+        print(f"Error creating admin: {str(e)}", flush=True)
+        raise HTTPException(status_code=500, detail=f"Error creating admin: {str(e)}")
